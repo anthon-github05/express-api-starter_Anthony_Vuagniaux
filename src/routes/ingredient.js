@@ -1,20 +1,19 @@
-// routes/products.js
 const express = require('express');
 const { body, param } = require('express-validator');
-const productController = require('../controllers/productController');
+const ingredientController = require('./ingredientController');
 
 const router = express.Router();
 
 /**
  * @openapi
- * /api/products:
+ * /api/ingredients:
  *   get:
- *     summary: Retrieve a list of products
+ *     summary: Retrieve a list of ingredients
  *     responses:
  *       200:
- *         description: A list of products
+ *         description: A list of ingredients
  *   post:
- *     summary: Create a new product
+ *     summary: Create a new ingredient
  *     requestBody:
  *       required: true
  *       content:
@@ -23,7 +22,6 @@ const router = express.Router();
  *             type: object
  *             required:
  *               - name
- *               - price
  *             properties:
  *               name:
  *                 type: string
@@ -31,20 +29,18 @@ const router = express.Router();
  *                 type: string
  *               imageUrl:
  *                 type: string
- *               price:
- *                 type: number
  *     responses:
  *       201:
- *         description: Product created
+ *         description: ingredient created
  *       400:
  *         description: Invalid input
  */
 
 /**
  * @openapi
- * /api/products/{id}:
+ * /api/ingredients/{id}:
  *   get:
- *     summary: Get a product by ID
+ *     summary: Get a ingredient by ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -53,11 +49,11 @@ const router = express.Router();
  *           type: integer
  *     responses:
  *       200:
- *         description: A single product
+ *         description: A single ingredient
  *       404:
- *         description: Product not found
+ *         description: Ingredient not found
  *   put:
- *     summary: Update a product by ID
+ *     summary: Update a ingredient by ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -77,17 +73,15 @@ const router = express.Router();
  *                 type: string
  *               imageUrl:
  *                 type: string
- *               price:
- *                 type: number
  *     responses:
  *       200:
- *         description: Product updated
+ *         description: Ingredient updated
  *       400:
  *         description: Invalid input
  *       404:
- *         description: Product not found
+ *         description: Ingredient not found
  *   delete:
- *     summary: Delete a product by ID
+ *     summary: Delete a ingredient by ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -96,25 +90,24 @@ const router = express.Router();
  *           type: integer
  *     responses:
  *       204:
- *         description: Product deleted
+ *         description: Ingredient deleted
  *       404:
- *         description: Product not found
+ *         description: Ingredient not found
  */
 
 /**
  * Validation rules
  */
-const createAndUpdateValidations = [
-    body('name').isString().notEmpty().withMessage('name is required'),
-    body('description').optional().isString(),
-    body('imageUrl').optional().isString().isURL().withMessage('imageUrl must be a valid URL'),
-    body('price').isFloat({ gt: 0 }).withMessage('price must be a positive number'),
+
+const createIngredientValidation = [
+    body('name').isString().withMessage('Name must be a string').notEmpty().withMessage('Name is required'),
+    body('quantity').isNumeric().withMessage('Quantity must be a number').notEmpty().withMessage('Quantity is required'),
 ];
 
-router.get('/', productController.findAll);
-router.post('/', createAndUpdateValidations, productController.create);
-router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], productController.findOne);
-router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], productController.update);
-router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], productController.delete);
+router.get('/', ingredientController.findAll);
+router.post('/', createIngredientValidation, ingredientController.create);
+router.post('/:id', [param('id').isInt().withMessage('ID must be an integer')], ingredientController.findOne);
+router.delete('/:id', [param('id').isInt().withMessage('ID must be an integer')], ...createIngredientValidation, ingredientController.update);
+router.get('/:id', [param('id').isInt().withMessage('ID must be an integer')], ingredientController.delete);
 
 module.exports = router;

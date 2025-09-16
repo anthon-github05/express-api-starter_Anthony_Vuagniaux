@@ -13,6 +13,7 @@ app.use(express.json());
 // API routes
 app.use('/api', router);
 
+
 // Swagger UI
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/docs/swagger.json', (req, res) => {

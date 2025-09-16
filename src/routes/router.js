@@ -1,9 +1,11 @@
 // routes/router.js
 const express = require('express');
-const productsRouter = require('./products');
+const pizzasRouter = require('./pizza');
+const ingredientsRouter = require('./ingredient');
 
 const router = express.Router();
 
-router.use('/products', productsRouter);
+router.use('/pizzas', pizzasRouter);
+router.use('/ingredients', ingredientsRouter);
 
 module.exports = router;
