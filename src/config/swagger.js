@@ -7,13 +7,13 @@ const options = {
         info: {
             title: 'Pizzas API',
             version: '1.0.0',
-            description: 'RESTful API for product management (SQLite, Express).'
+            description: 'RESTful API for pizza management (SQLite, Express).'
         },
         servers: [
             { url: 'http://localhost:3000', description: 'Local dev server' }
         ]
     },
-    apis: ['./src/routes/*.js', './src/controllers/*.js'] // pick up JSDoc in routes/controllers
+    apis: ['./src/**/*.js', './src/controllers/*.js'] // pick up JSDoc in routes/controllers
 };
 
 const swaggerSpec = swaggerJSDoc(options);

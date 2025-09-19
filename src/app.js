@@ -5,6 +5,7 @@ const router = require('./routes/router');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 
+
 const app = express();
 
 app.use(morgan('dev'));
@@ -12,7 +13,6 @@ app.use(express.json());
 
 // API routes
 app.use('/api', router);
-
 
 // Swagger UI
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

@@ -1,5 +1,5 @@
-// entities/pizza.js
-const db = require('../../config/database');
+// entities/Pizza.js
+const db = require('../config/database');
 
 class Pizza {
     static create({ name, description, imageUrl, price }) {
@@ -17,7 +17,7 @@ class Pizza {
     }
 
     static findAll() {
-        const sql = `SELECT * FROM pizzas ORDER BY id DESC`;
+        const sql = `SELECT * FROM Pizzas ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.all(sql, [], (err, rows) => {
                 if (err) return reject(err);

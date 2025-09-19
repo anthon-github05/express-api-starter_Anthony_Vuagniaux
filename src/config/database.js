@@ -15,24 +15,37 @@ const db = new sqlite3.Database(dbFile, (err) => {
 
 // Initialize pizzas table if not exists
 const initSql = `
-CREATE TABLE IF NOT EXISTS pizzas (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  description TEXT,
-  imageUrl TEXT,
-  price REAL NOT NULL,
-  created_at TEXT DEFAULT (datetime('now')),
-  updated_at TEXT DEFAULT (datetime('now'))
-);
+    CREATE TABLE IF NOT EXISTS pizzas (
+                                          id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                          name TEXT NOT NULL,
+                                          description TEXT,
+                                          imageUrl TEXT,
+                                          price REAL NOT NULL,
+                                          created_at TEXT DEFAULT (datetime('now')),
+        updated_at TEXT DEFAULT (datetime('now'))
+        );
 `;
-// Initialize ingredients table if not exists
+
 const initIngredientsSql = `
-CREATE TABLE IF NOT EXISTS ingredients (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  description TEXT,
+    CREATE TABLE IF NOT EXISTS ingredients (
+                                               id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                               name TEXT NOT NULL,
+                                               description TEXT,
+                                               imageUrl TEXT,
+                                               price REAL
+    );
+`;
+
+const initPizzaIngredientsSql = `
+CREATE TABLE IF NOT EXISTS pizza_ingredients (
+  pizza_id INTEGER,
+  ingredient_id INTEGER,
+  PRIMARY KEY (pizza_id, ingredient_id),
+  FOREIGN KEY (pizza_id) REFERENCES pizzas(id),
+  FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
 );
 `;
+
 db.serialize(() => {
     db.run(initSql, (err) => {
         if (err) {
@@ -40,6 +53,20 @@ db.serialize(() => {
             process.exit(1);
         }
     });
+    db.run(initIngredientsSql, (err) => {
+        if (err) {
+            console.error('Failed to initialize ingredients table', err);
+            process.exit(1);
+        }
+    });
+    db.run(initPizzaIngredientsSql, (err) => {
+        if (err) {
+            console.error('Failed to initialize pizza_ingredients table', err);
+            process.exit(1);
+        }
+    });
 });
+
+
 
 module.exports = db;
