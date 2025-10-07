@@ -5,7 +5,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Pizzas API',
+            title: 'Foodtruck API',
             version: '1.0.0',
             description: 'RESTful API for pizza management (SQLite, Express).'
         },
